@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Checkmate Squad</title>
+  <link rel="icon" href="check.png" type="image/png" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f9fb;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2d3436;
+    }
+
+    .section {
+      max-width: 700px;
+      background: white;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      font-size: 16px;
+    }
+
+    button {
+      background: #0984e3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #f1f2f6;
+      margin: 5px 0;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      border-radius: 5px;
+    }
+
+    li button {
+      background: #d63031;
+      padding: 5px 10px;
+      font-size: 14px;
+      border-radius: 4px;
+    }
+
+    .success {
+      color: green;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Admin Panel - Checkmate Squad</h1>
+
+  <div class="section">
+    <h3>Add Player</h3>
+    <input type="text" id="newPlayer" placeholder="Player Name">
+    <button onclick="addPlayer()">Add</button>
+    <ul id="playerList"></ul>
+  </div>
+
+  <div class="section">
+    <h3>Schedule Match</h3>
+    <form id="matchForm">
+      <select id="player1" required></select>
+      <select id="player2" required></select>
+      <input type="date" id="date" required>
+      <input type="time" id="time" required>
+      <input type="text" id="location" placeholder="Location" required>
+      <button type="submit">Add Match</button>
+    </form>
+    <p class="success" id="matchMsg"></p>
+  </div>
+
+  <div class="section">
+    <h3>Scheduled Matches</h3>
+    <ul id="matchList"></ul>
+  </div>
+
+  <script>
+    let players = JSON.parse(localStorage.getItem('chessPlayers') || '[]');
+    let matches = JSON.parse(localStorage.getItem('chessMatches') || '[]');
+
+    const playerList = document.getElementById('playerList');
+    const matchList = document.getElementById('matchList');
+    const player1Select = document.getElementById('player1');
+    const player2Select = document.getElementById('player2');
+
+    function refreshPlayerData() {
+      playerList.innerHTML = '';
+      player1Select.innerHTML = '';
+      player2Select.innerHTML = '';
+
+      players.forEach((p, index) => {
+        let li = document.createElement('li');
+        li.innerHTML = `${p} <button onclick="deletePlayer(${index})">Delete</button>`;
+        playerList.appendChild(li);
+
+        let opt1 = new Option(p, p);
+        let opt2 = new Option(p, p);
+        player1Select.add(opt1);
+        player2Select.add(opt2);
+      });
+    }
+
+    function addPlayer() {
+      const name = document.getElementById('newPlayer').value.trim();
+      if (name && !players.includes(name)) {
+        players.push(name);
+        localStorage.setItem('chessPlayers', JSON.stringify(players));
+        refreshPlayerData();
+        document.getElementById('newPlayer').value = '';
+      }
+    }
+
+    function deletePlayer(index) {
+      players.splice(index, 1);
+      localStorage.setItem('chessPlayers', JSON.stringify(players));
+      refreshPlayerData();
+    }
+
+    function refreshMatchList() {
+      matchList.innerHTML = '';
+      matches.forEach((m, index) => {
+        let li = document.createElement('li');
+        li.innerHTML = `${m.player1} vs ${m.player2} on ${m.date} at ${m.time} <button onclick="deleteMatch(${index})">Delete</button>`;
+        matchList.appendChild(li);
+      });
+    }
+
+    function deleteMatch(index) {
+      matches.splice(index, 1);
+      localStorage.setItem('chessMatches', JSON.stringify(matches));
+      refreshMatchList();
+    }
+
+    document.getElementById('matchForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const player1 = player1Select.value;
+      const player2 = player2Select.value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const location = document.getElementById('location').value;
+
+      if (player1 === player2) {
+        alert("Choose different players!");
+        return;
+      }
+
+      matches.push({ player1, player2, date, time, location });
+      localStorage.setItem('chessMatches', JSON.stringify(matches));
+      refreshMatchList();
+      this.reset();
+      document.getElementById('matchMsg').textContent = "Match added successfully!";
+    });
+
+    refreshPlayerData();
+    refreshMatchList();
+  </script>
+</body>
+</html>
