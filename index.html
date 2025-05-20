@@ -1,140 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Checkmate Squad</title>
-  <link rel="icon" href="check.png" type="image/png" />
+  <meta charset="UTF-8">
+  <title>All Profiles</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #fdfcfb, #e2d1c3);
-      color: #2d3436;
-    }
-
-    header {
-      background: #222;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      background-color: #000;
       color: white;
+      font-family: Arial, sans-serif;
+      padding: 30px;
     }
-
-    header img {
-      height: 40px;
-      vertical-align: middle;
-    }
-
-    header h1 {
-      font-size: 1.8em;
-      margin: 0 10px;
-    }
-
-    .hero {
+    h1 {
+      color: red;
       text-align: center;
-      padding: 60px 20px;
-      background: #ffeaa7;
     }
-
-    .hero h2 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
-    }
-
-    .hero p {
-      font-size: 1.1em;
-      color: #444;
-    }
-
-    section {
-      padding: 40px 20px;
-      max-width: 1000px;
-      margin: auto;
-    }
-
-    .matches {
-      display: flex;
-      flex-wrap: wrap;
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       gap: 20px;
-      justify-content: center;
+      margin-top: 30px;
     }
-
-    .match {
-      background: white;
+    .card {
+      background-color: #111;
+      border: 2px solid red;
+      padding: 15px;
       border-radius: 10px;
-      padding: 20px;
-      width: 300px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    .match h3 {
-      color: #0984e3;
-    }
-
-    .footer {
       text-align: center;
-      padding: 20px;
-      background: #222;
+    }
+    a {
       color: white;
+      text-decoration: none;
+    }
+    .card:hover {
+      background-color: #222;
     }
   </style>
 </head>
 <body>
-
-  <header>
-    <div style="display:flex;align-items:center;">
-      <img src="check.png" alt="Logo">
-      <h1>Checkmate Squad</h1>
-    </div>
-  </header>
-
-  <div class="hero">
-    <h2>Welcome to Checkmate Squad</h2>
-    <p>Your ultimate destination for competitive chess tournaments</p>
+  <h1>All Profile Cards</h1>
+  <div class="grid">
+    <div class="card"><a href="adib.html">Adib Baomar</a></div>
+    <div class="card"><a href="med.html">Mohammed Kanboui</a></div>
+    <div class="card"><a href="simo.html">Mohammed Jouichi</a></div>
+    <div class="card"><a href="adamy.html">Adam Yousfy</a></div>
+    <!-- Add more profile HTML links here -->
   </div>
-
-  <section>
-    <h2 style="text-align:center;">Upcoming Matches</h2>
-    <div class="matches" id="matches"></div>
-  </section>
-
-  <section>
-    <h2>About Us</h2>
-    <p>Checkmate Squad is a platform where top chess players gather to battle minds and strategy. We host weekly online and local tournaments that are open to all levels, from beginner to grandmaster.</p>
-  </section>
-
-  <section>
-    <h2>Contact</h2>
-    <p>Email: support@checkmatesquad.com</p>
-    <p>Location: Global (Online Tournaments)</p>
-  </section>
-
-  <div class="footer">
-    &copy; 2025 Checkmate Squad. All rights reserved.
-  </div>
-
-  <script>
-    const matches = JSON.parse(localStorage.getItem('chessMatches') || '[]');
-    const container = document.getElementById('matches');
-
-    if (matches.length === 0) {
-      container.innerHTML = "<p>No matches scheduled yet.</p>";
-    } else {
-      matches.forEach(match => {
-        const div = document.createElement('div');
-        div.className = 'match';
-        div.innerHTML = `
-          <h3>${match.player1} vs ${match.player2}</h3>
-          <p><strong>Date:</strong> ${match.date}</p>
-          <p><strong>Time:</strong> ${match.time}</p>
-          <p><strong>Location:</strong> ${match.location}</p>
-        `;
-        container.appendChild(div);
-      });
-    }
-  </script>
-
 </body>
 </html>
